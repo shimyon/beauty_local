@@ -1,0 +1,8 @@
+{
+  "name": "beautyparlour",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

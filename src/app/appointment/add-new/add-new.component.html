@@ -1,0 +1,48 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary" fill="clear" (click)="GoAppt()">
+            <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+        </ion-buttons>
+        <ion-title>Book Appoinment</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-card>
+        <ion-card-content>
+            <ion-item>
+                <ion-label position="floating">Client</ion-label>
+                <ion-select placeholder="Client" [(ngModel)]="tenantSel">
+                    <ion-select-option [value]="tnt.TenantId" *ngFor="let tnt of tenants">{{ tnt.FullName }}</ion-select-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-input type="text" placeholder="Title" [(ngModel)]="event.title"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-input type="text" placeholder="Description" [(ngModel)]="event.desc"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">Services</ion-label>
+                <ion-select placeholder="Services" [(ngModel)]="servicesSel" multiple="true">
+                    <ion-select-option [value]="srv.LookUpId" *ngFor="let srv of services">{{ srv.Value }}</ion-select-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">Status</ion-label>
+                <ion-select placeholder="Status" [(ngModel)]="statusSel">
+                    <ion-select-option [value]="srv.LookUpId" *ngFor="let srv of status">{{ srv.Value }}</ion-select-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">Time</ion-label>
+                <!-- <ion-datetime displayFormat="MM/DD/YYYY hh:mm A" hourValues="10,11" minuteValues="0,5,10,15,20,25,30,35,40,45,50,55" pickerFormat="MMM D:hh:mm A" [(ngModel)]="event.startTime" [min]="minDate"></ion-datetime> -->
+                <ion-datetime displayFormat="MM/DD/YYYY hh:mm A" minuteValues="0,5,10,15,20,25,30,35,40,45,50,55" pickerFormat="MMM D:hh:mm A" [(ngModel)]="event.startTime" [min]="minDate"></ion-datetime>
+            </ion-item>
+            <ion-button fill="outline" expand="block" (click)="addEvent()" [disabled]="EnableSubmit()">Book</ion-button>
+        </ion-card-content>
+    </ion-card>
+</ion-content>
