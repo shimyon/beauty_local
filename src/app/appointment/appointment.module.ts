@@ -10,6 +10,7 @@ import { AppointmentPage } from './appointment.page';
 import { AddNewComponent } from './add-new/add-new.component';
 import { NgCalendarModule } from 'ionic2-calendar';
 import { ApptListComponent } from './appt-list/appt-list.component';
+import { ApptViewComponent } from './appt-view/appt-view.component';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { ApptListComponent } from './appt-list/appt-list.component';
   declarations: [
     AppointmentPage,
     AddNewComponent,
-    ApptListComponent    
+    ApptListComponent,
+    ApptViewComponent
   ]
 })
 export class AppointmentPageModule { }

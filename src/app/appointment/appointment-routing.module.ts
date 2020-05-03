@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AppointmentPage } from './appointment.page';
 import { AddNewComponent } from './add-new/add-new.component';
 import { ApptListComponent } from './appt-list/appt-list.component';
+import { ApptViewComponent } from './appt-view/appt-view.component';
 const routes: Routes = [
   {
     path: '',
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'list',
     component: ApptListComponent
+  },
+  {
+    path: 'view',
+    component: ApptViewComponent
   }
 ];
 

@@ -1,0 +1,54 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start" [hidden]="isModal">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary" fill="clear" (click)="closeModal()">
+            <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+        </ion-buttons>
+        <ion-title>{{ data.status }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-list>
+        <ion-card-content>
+
+            <ion-item [hidden]="!data.TenantName">
+                <ion-label color="primary" position="stacked">Client</ion-label>
+                <ion-input type="text" placeholder="Client" [readonly]="true" [(ngModel)]="data.TenantName"></ion-input>
+            </ion-item>
+
+            <ion-item [hidden]="!data.Subject">
+                <ion-label color="primary" position="stacked">Subject</ion-label>
+                <ion-input type="text" placeholder="Subject" [readonly]="true" [(ngModel)]="data.Subject"></ion-input>
+            </ion-item>
+
+            <ion-item [hidden]="!data.Message">
+                <ion-label color="primary" position="stacked">Message</ion-label>
+                <ion-input type="text" placeholder="Message" [readonly]="true" [(ngModel)]="data.Message"></ion-input>
+            </ion-item>
+
+            <ion-item [hidden]="!data.ApptService">
+                <ion-label color="primary" position="stacked">Services</ion-label>
+                <ion-input type="text" placeholder="Services" [readonly]="true" [readonly] [(ngModel)]="data.ApptService"></ion-input>
+            </ion-item>
+
+            <ion-item [hidden]="!data.status">
+                <ion-label color="primary" position="stacked">Status</ion-label>
+                <ion-input type="text" placeholder="Status" [readonly]="true" [readonly] [(ngModel)]="data.status"></ion-input>
+            </ion-item>
+
+            <ion-item [hidden]="!data.ApptDateDtFt">
+                <ion-label color="primary" position="stacked">Date</ion-label>
+                <ion-input type="text" placeholder="Date" [readonly]="true" [readonly] [(ngModel)]="data.ApptDateDtFt"></ion-input>
+            </ion-item>
+
+            <ion-item [hidden]="!data.ApptDateTmFt">
+                <ion-label color="primary" position="stacked">Time</ion-label>
+                <ion-input type="text" placeholder="Time" [readonly]="true" [readonly] [(ngModel)]="data.ApptDateTmFt"></ion-input>
+            </ion-item>
+
+        </ion-card-content>
+    </ion-list>
+</ion-content>

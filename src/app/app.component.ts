@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Router } from '@angular/router';
 import { appGlob } from '../environments/app_glob';
+import { AppSharedService } from './_services/app-shared.service';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ import { appGlob } from '../environments/app_glob';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
+  user: any = {};
   public isShowNav: boolean = false;
   public selectedIndex = 0;
   public appPages = [
@@ -28,7 +30,7 @@ export class AppComponent implements OnInit {
     {
       title: 'Appointment',
       url: '/appointment',
-      icon: 'mail'
+      icon: 'calendar'
     },
     {
       title: 'Book Appointment',
@@ -42,7 +44,8 @@ export class AppComponent implements OnInit {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private router: Router
+    private router: Router,
+    private appsharesrv: AppSharedService
   ) {
     this.initializeApp();
   }
@@ -51,7 +54,17 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.getUserDetails();
+      this.appsharesrv.dataChange.subscribe((data) => {
+        if (data.type == "login") {
+          this.getUserDetails();
+        }
+      });
     });
+  }
+
+  getUserDetails() {
+    this.user = appGlob.User.UserDetailsGet();
   }
 
   ngOnInit() {
@@ -61,8 +74,8 @@ export class AppComponent implements OnInit {
     }
   }
 
-  ionViewDidLeave(){
-    alert('done');
+  ionViewDidLeave() {
+
   }
 
   logout() {

@@ -17,31 +17,44 @@
 
     <ion-list *ngFor="let i of data">
         <ion-item>
-            <ion-label>
-                <p>
-                    <ion-text color="secondary">{{ i.status }}</ion-text>
-                </p>
-                <h3>
+            <ion-label (click)="viewAppts(i.AppointmentId)">
+                <h3 [hidden]="isCustomer">
                     {{ i.Firstname + " " + i.Surname }}
+                </h3>
+                <h3 [hidden]="isClient">
+                    {{ i.TenantName }}
                 </h3>
                 <p>
                     <span>
-                        {{ i.ApptDateTmFt }}
-                    </span>
+            <ion-icon name="time-outline"></ion-icon> {{ i.ApptDateTmFt }}
+          </span>
+                </p>
+                <p>
+                    <ion-text color="secondary">{{ i.status }}</ion-text>
                 </p>
                 <p>
                     <span>
-                        <ion-text color="success">
-                            {{ i.ApptDateDtFt }}
-                        </ion-text>
-                    </span>
+            <ion-text color="success">
+              <ion-icon color="success" name="calendar-outline"></ion-icon>
+              {{ i.ApptDateDtFt }}
+            </ion-text>
+          </span>
                 </p>
-                <p>
+                <p [hidden]="!i.ApptService">
                     <ion-text color="success">
+                        <ion-icon color="success" name="cut-outline"></ion-icon>
                         {{ i.ApptService }}
                     </ion-text>
                 </p>
             </ion-label>
+
+            <ion-icon color="warning" (click)="presentActionSheet(i.AppointmentId)" name="create"></ion-icon>
+            <!-- <ion-button>
+                <ion-icon name="pencil"></ion-icon>
+            </ion-button>
+            <ion-button>
+                <ion-icon name="pencil"></ion-icon>
+            </ion-button> -->
         </ion-item>
     </ion-list>
 

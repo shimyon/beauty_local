@@ -4,14 +4,15 @@
   </ion-toolbar>
 </ion-header> -->
 
-<ion-content>
-    <div style="background: url(assets/loginbg.png);
-    background-size: 140%;
-    height: 100%;
-    background-repeat: repeat-x;
-    background-attachment: fixed;
-    background-position: bottom;
-    background-color: brown;
+<ion-content padding>
+    <div style="
+      background: url(assets/loginbg.png);
+      background-size: 200%;
+      height: 100%;
+      background-repeat: repeat-x;
+      background-attachment: fixed;
+      background-position: bottom;
+      background-color: #fff;
     ">
         <form #form="ngForm" (ngSubmit)="register(form)">
             <ion-grid>
@@ -20,23 +21,41 @@
                         <div style="text-align: center;">
                             <img src="assets/bbloginlogowhite.png" style="max-width: 150px; margin-top: 50px; margin-bottom: 50px;" />
                         </div>
-                        <div [hidden]="!AppForClient">
+                        <div padding [hidden]="!AppForClient">
                             <ion-item>
                                 <ion-input id="environment" name="environment" type="text" placeholder="Client ID" [(ngModel)]="formvalue.environment" required></ion-input>
                             </ion-item>
                         </div>
-                        <div>
+                        <div padding>
                             <ion-item>
                                 <ion-input name="username" type="text" placeholder="User Name" [(ngModel)]="formvalue.username" required></ion-input>
                             </ion-item>
+                        </div>
+                        <div padding>
                             <ion-item>
                                 <ion-input name="password" type="password" [(ngModel)]="formvalue.password" placeholder="Password" ngModel required></ion-input>
                             </ion-item>
                         </div>
-                        <div>
-                            <ion-button size="large" type="submit" [disabled]="form.invalid" expand="block">Log In</ion-button>
+                        <div padding>
+                            <ion-button type="submit" [disabled]="form.invalid" expand="block">Log In</ion-button>
                         </div>
+                        <!-- <div style="text-align: center;">
+                            <h3>
+                                <span>OR</span>
+                            </h3>
+                        </div>
+                        <div padding>
+                            <ion-button (click)="signup()" size="large" type="button" expand="block">Sign Up</ion-button>
+                        </div> -->
                     </ion-col>
+                </ion-row>
+                <ion-row>
+                    <div text-center color="warning">
+                        <ion-text color="secondary">
+                            If you don't have an account, please
+                            <a routerLink="/login/signup"> register</a> first!
+                        </ion-text>
+                    </div>
                 </ion-row>
             </ion-grid>
         </form>

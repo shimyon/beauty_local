@@ -21,7 +21,7 @@ export class TosteService {
             text: buttontext,
             role: 'cancel',
             handler: () => {
-              console.log('Cancel clicked');
+              result();
             }
           }
         ]
@@ -41,7 +41,7 @@ export class TosteService {
             text: buttontext,
             role: 'cancel',
             handler: () => {
-              console.log('Cancel clicked');
+              result();
             }
           }
         ]
@@ -62,7 +62,7 @@ export class TosteService {
             text: buttontext,
             role: 'cancel',
             handler: () => {
-              console.log('Cancel clicked');
+              result();
             }
           }
         ]

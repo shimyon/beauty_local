@@ -5,13 +5,13 @@ export const appGlob = {
         UserDetailsGet: () => {
             return {
                 userid: localStorage.getItem('userid'),
-                username: localStorage.getItem('username'),
-                firstname: localStorage.getItem('firstname'),
-                surname: localStorage.getItem('surname'),
-                lastname: localStorage.getItem("lastname"),
+                username: localStorage.getItem('username') || '',
+                firstname: localStorage.getItem('firstname') || '',
+                surname: localStorage.getItem('surname') || '',
+                lastname: localStorage.getItem("lastname") || '',
                 isLogin: localStorage.getItem('isLogin'),
                 AppFor: localStorage.getItem('AppFor'),
-                TenantId: localStorage.getItem('tenantid')
+                TenantId: localStorage.getItem('tenantid') || '0'
             }
         },
         UserDetailsClear: () => {

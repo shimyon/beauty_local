@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { TosteService, AuthenticationService, AjaxServiceService, LoadingService } from '.';
+import { TosteService, AuthenticationService, AjaxServiceService, LoadingService, AppSharedService } from '.';
 
 
 
@@ -11,6 +11,7 @@ import { TosteService, AuthenticationService, AjaxServiceService, LoadingService
     CommonModule
   ],
   providers: [
+    AppSharedService,
     TosteService,
     HttpClient,
     AuthenticationService,

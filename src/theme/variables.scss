@@ -4,14 +4,37 @@
 /** Ionic CSS Variables **/
 
 :host {
+    $text: #fff;
     --color: #fff;
+    --ion-text-color: #fff;
+}
+
+
+/* Set text color of the entire app for iOS only */
+
+// .ios {
+//     --color: #fff;
+//     --ion-text-color: rgb(255, 255, 255);
+// }
+// /* Set text color of the entire app for Material Design only */
+// .md {
+//     --color: #fff;
+//     --ion-text-color: rgb(255, 255, 255);
+// }
+
+/* Set the color on all ion-button elements */
+
+ion-button {
+    --color: rgb(255, 255, 255);
 }
 
 :root {
-    /* Set the background of the entire app */
-    --ion-background-color: #0d47a1;
-    --internal-root-color: #fff;
+    --button-color: #fff;
     --color: #fff;
+    --ion-text-color: #fff;
+    /* Set the background of the entire app */
+    --ion-background-color: #880E4F;
+    --internal-root-color: #fff;
     *:not(.ion-color):not(ion-loading):not(.loading-wrapper):not(.loading-content):not(ion-spinner):not([color]) {
         color: #fff;
     }

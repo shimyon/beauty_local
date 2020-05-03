@@ -1,7 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonInfiniteScroll } from '@ionic/angular';
+import { IonInfiniteScroll, ActionSheetController, ModalController } from '@ionic/angular';
 import { AppointmentService } from '../../_services/app-services/appointment.service';
 import { HttpParams } from '@angular/common/http';
+import { appGlob } from '../../../environments/app_glob';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ApptViewComponent } from '../appt-view/appt-view.component';
 
 @Component({
   selector: 'app-appt-list',
@@ -10,14 +13,76 @@ import { HttpParams } from '@angular/common/http';
 })
 export class ApptListComponent implements OnInit {
   @ViewChild(IonInfiniteScroll, { static: true }) infiniteScroll: IonInfiniteScroll;
-
+  isCustomer: boolean = false;
+  isClient: boolean = false;
   data = [];
 
-  constructor(private apptsrv: AppointmentService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private apptsrv: AppointmentService,
+    public actionSheetController: ActionSheetController,
+    public modalController: ModalController) { }
 
   ngOnInit() {
+    this.isClient = appGlob.User.isClient();
+    this.isCustomer = appGlob.User.isCustomer();
     this.AddData();
   }
+
+  async presentActionSheet(apptid) {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Action',
+      buttons: [{
+        text: 'Delete',
+        role: 'destructive',
+        icon: 'trash',
+        handler: () => {
+          console.log('Delete clicked');          
+        }
+      }, {
+        text: 'View',
+        icon: 'eye',
+        handler: () => {          
+          this.viewAppts(apptid);
+        }
+      }, {
+        text: 'Edit',
+        icon: 'pencil',
+        handler: () => {
+          this.editAppt(apptid);
+        }
+      }, {
+        text: 'Cancel',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      }]
+    });
+    await actionSheet.present();
+  }
+
+  viewAppts(apptid){
+    this.presentModal(apptid);
+          // this.router.navigate(['appointment/view', { AppointmentId: apptid }]);
+  }
+
+  editAppt(apptid){
+    this.router.navigate(['appointment/new', { AppointmentId: apptid }]);
+  }
+
+  async presentModal(apptid) {
+    const modal = await this.modalController.create({
+      component: ApptViewComponent,
+      componentProps: {
+        'pAppointmentId': apptid
+      }
+    });
+    return await modal.present();
+  }
+
 
   AddData() {
     // for (let index = 0; index < 50; index++) {
@@ -26,7 +91,6 @@ export class ApptListComponent implements OnInit {
     let params = new HttpParams();
     this.apptsrv.getList(params).subscribe(s => {
       this.data = this.data.concat(s);
-      console.log(this.data);
     });
   }
 

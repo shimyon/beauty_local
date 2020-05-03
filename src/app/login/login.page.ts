@@ -4,6 +4,7 @@ import { AuthenticationService, TosteService } from '../_services';
 import { NgForm } from '@angular/forms';
 import { appGlob } from '../../environments/app_glob';
 import { environment } from '../../environments/environment';
+import { AppSharedService } from '../_services/app-shared.service';
 
 @Component({
   selector: 'app-login',
@@ -11,9 +12,8 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  AppForClient:boolean = false;
+  AppForClient: boolean = false;
   model: any = {};
-  loading = false;
   returnUrl: string;
   formvalue = {
     environment: localStorage.getItem('tenantid') || '',
@@ -26,7 +26,9 @@ export class LoginPage implements OnInit {
     public Toste: TosteService,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService) { }
+    private authenticationService: AuthenticationService,
+    private appsharesrv: AppSharedService
+  ) { }
 
   ngOnInit() {
     // reset login status
@@ -53,28 +55,28 @@ export class LoginPage implements OnInit {
     // this.router.navigateByUrl("waybills");
     // return;
     // debugger
-    this.loading = true;
-
-
     this.authenticationService.login(form.value.environment, form.value.username, form.value.password)
       .subscribe(
         data => {
-          this.loading = false;
           if (!data.isOk) {
             this.Toste.ShowAutoHide(data.msg);
           } else {
-           this.loginsuccess();
+            this.appsharesrv.setData({ type: "login" });
+            this.loginsuccess();
           }
         },
         err => {
           this.Toste.ShowAutoHide(err.error.error_description);
           // login failed so display error
           // this.alertService.error(error);
-          this.loading = false;
         });
   }
 
   loginsuccess() {
     this.router.navigateByUrl("appointment");
+  }
+
+  signup() {
+    this.router.navigateByUrl("login/signup");
   }
 }

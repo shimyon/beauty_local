@@ -1,11 +1,15 @@
 import { Component, ViewChild, OnInit, Inject, LOCALE_ID } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { LookupService } from '../../_services/app-services/lookup.service';
 import { lookup } from '../../_models/lookup/lookup.model';
 import { appGlob } from '../../../environments/app_glob';
 import { TenantService } from '../../_services/app-services/tenant.service';
 import { tenant } from '../../_models/tenant/tenant.model';
+import { AppointmentService } from '../../_services/app-services/appointment.service';
+import { TosteService } from '../../_services';
+import { Appointment } from '../../_models/appointment/appointment.model';
+import { HttpParams } from '@angular/common/http';
 
 
 @Component({
@@ -14,9 +18,10 @@ import { tenant } from '../../_models/tenant/tenant.model';
   styleUrls: ['./add-new.component.scss'],
 })
 export class AddNewComponent implements OnInit {
+  userdet = appGlob.User.UserDetailsGet();
   status: any[] = [];
   statusSel: number;
-
+  AppointmentId: any;
 
   tenants: any[] = [];
   tenantSel: number;
@@ -40,8 +45,11 @@ export class AddNewComponent implements OnInit {
   };
 
   constructor(
+    public Toste: TosteService,
     private tenantsrv: TenantService,
     private lookupsrv: LookupService,
+    private apptsrv: AppointmentService,
+    private route: ActivatedRoute,
     private router: Router,
     private alertCtrl: AlertController, @Inject(LOCALE_ID) private locale: string) {
 
@@ -52,15 +60,52 @@ export class AddNewComponent implements OnInit {
     await this.getTenants();
     await this.getStatus();
     await this.getServices();
-    let userdet = appGlob.User.UserDetailsGet();
-    this.event.title = userdet.firstname + ' ' + userdet.surname + ' - Appt';
+    if (this.status.length) {
+      let selstatus = this.status.filter(s => s.Class == "New Appointment");
+      if (selstatus.length) {
+        this.statusSel = selstatus[0].LookUpId;
+      }
+    }
+
+    this.event.title = this.userdet.firstname + ' ' + this.userdet.surname + ' - Appt';
+    this.route.params.subscribe(params => {
+      if (params['AppointmentId']) {
+        this.AppointmentId = params['AppointmentId'] || 0;
+        this.getData();
+      }
+    })
+  }
+
+  async getData() {
+    let params = new HttpParams();
+    params = params.append("isSingleRecord", "Y");
+    params = params.append("AppointmentId", this.AppointmentId);
+    return new Promise((success, rejected) => {
+      this.apptsrv.getList(params).subscribe(s => {
+        let data = <Appointment>s;
+        this.event.startTime = data.ApptDate.toString();
+        this.statusSel = data.StatusId;
+        this.tenantSel = data.TenantId;
+        this.event.title = data.Subject;
+        this.event.desc = data.Message;
+        this.servicesSel = data.ApptServiceIds.split(',');
+        success(this.status);
+      }, err => {
+        rejected(err);
+      });
+    });
   }
 
   async getStatus() {
     let lkup: lookup = new lookup();
     lkup.GroupName = 'AppStatus';
-    return await this.lookupsrv.getList(lkup).subscribe(s => {
-      this.status = <[]>s;
+    return new Promise((success, rejected) => {
+      this.lookupsrv.getList(lkup).subscribe(s => {
+        this.status = <[]>s;
+        success(this.status);
+      }, err => {
+        rejected(err);
+      });
     });
   }
 
@@ -68,8 +113,13 @@ export class AddNewComponent implements OnInit {
   async getTenants() {
     let dt: tenant = new tenant();
     dt.BusinessType = 'Salon';
-    return await this.tenantsrv.getList(dt).subscribe(s => {
-      this.tenants = <[]>s;
+    return new Promise((success, rejected) => {
+      this.tenantsrv.getList(dt).subscribe(s => {
+        this.tenants = <[]>s;
+        success(this.tenants);
+      }, err => {
+        rejected(err);
+      });
     });
   }
 
@@ -77,8 +127,13 @@ export class AddNewComponent implements OnInit {
     let lkup: lookup = new lookup();
     lkup.BusinessType = 'Salon';
     lkup.GroupName = 'parlour_service';
-    return await this.lookupsrv.getList(lkup).subscribe(s => {
-      this.services = <[]>s;
+    return new Promise((success, rejected) => {
+      this.lookupsrv.getList(lkup).subscribe(s => {
+        this.services = <[]>s;
+        success(this.services);
+      }, err => {
+        rejected(err);
+      });
     });
   }
 
@@ -107,6 +162,34 @@ export class AddNewComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  Submit() {
+    debugger
+    let appt: Appointment = new Appointment();
+    appt.Message = this.event.desc;
+    appt.Subject = this.event.title;
+    appt.ApptDate = new Date(this.event.startTime);
+    appt.StatusId = this.statusSel;
+    appt.TenantId = this.tenantSel;
+    if (appGlob.User.isCustomer()) {
+      appt.CustomerId = parseInt(this.userdet.userid);
+    }
+    appt.Services = this.servicesSel.join(',');
+
+    this.apptsrv.SaveData(appt)
+      .subscribe(
+        dt => {
+          let data = <any>dt;
+          if (!data.IsOk) {
+            this.Toste.ShowAutoHide(data.Error);
+          } else {
+            this.GoAppt();
+          }
+        },
+        err => {
+          this.Toste.ShowAutoHide(err.error.error_description);
+        });
   }
 
   // Create the right event format and reload source
