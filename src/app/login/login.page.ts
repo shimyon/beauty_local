@@ -73,7 +73,7 @@ export class LoginPage implements OnInit {
   }
 
   loginsuccess() {
-    this.router.navigateByUrl("appointment");
+    this.router.navigateByUrl("appointment/list");
   }
 
   signup() {

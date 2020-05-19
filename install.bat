@@ -1,0 +1,2 @@
+"E:\Android\platform-tools\adb" uninstall za.co.fusioncloud.timesheetapp
+"E:\Android\platform-tools\adb" install "D:\Shimyon\Emoiss\beautyparlour\platforms\android\app\build\outputs\apk\debug\app-debug.apk"

@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiurl: 'http://www.anmolfoundation.group',
+  apiurl: 'http://localhost:90/anmolfoundation.group',
   AppFor: "Customer"
 };

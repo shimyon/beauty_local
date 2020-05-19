@@ -22,6 +22,7 @@ export class AddNewComponent implements OnInit {
   status: any[] = [];
   statusSel: number;
   AppointmentId: any;
+  isCustomer:boolean = appGlob.User.isCustomer();
 
   tenants: any[] = [];
   tenantSel: number;
@@ -167,9 +168,11 @@ export class AddNewComponent implements OnInit {
   Submit() {
     debugger
     let appt: Appointment = new Appointment();
+    appt.AppointmentId = this.AppointmentId;
     appt.Message = this.event.desc;
     appt.Subject = this.event.title;
     appt.ApptDate = new Date(this.event.startTime);
+    
     appt.StatusId = this.statusSel;
     appt.TenantId = this.tenantSel;
     if (appGlob.User.isCustomer()) {
@@ -188,7 +191,7 @@ export class AddNewComponent implements OnInit {
           }
         },
         err => {
-          this.Toste.ShowAutoHide(err.error.error_description);
+          this.Toste.Show(err.error.error_description);
         });
   }
 
@@ -205,6 +208,6 @@ export class AddNewComponent implements OnInit {
   }
 
   GoAppt() {
-    this.router.navigateByUrl('/appointment');
+    this.router.navigateByUrl('/appointment/list');
   }
 }

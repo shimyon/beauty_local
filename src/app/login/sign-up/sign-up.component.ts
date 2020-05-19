@@ -59,7 +59,7 @@ export class SignUpComponent implements OnInit {
       }
     },
       err => {
-        this.Toste.ShowAutoHide(err.error.error_description);
+        this.Toste.Show(err.error.error_description);
       });
   }
 

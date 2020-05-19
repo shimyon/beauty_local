@@ -16,6 +16,7 @@ export class ApptListComponent implements OnInit {
   isCustomer: boolean = false;
   isClient: boolean = false;
   data = [];
+  totaldata =0;
 
   constructor(
     private route: ActivatedRoute,
@@ -25,6 +26,12 @@ export class ApptListComponent implements OnInit {
     public modalController: ModalController) { }
 
   ngOnInit() {
+
+  }
+
+  ionViewWillEnter() {
+    console.log('ionViewWillEnter');
+    this.data = [];
     this.isClient = appGlob.User.isClient();
     this.isCustomer = appGlob.User.isCustomer();
     this.AddData();
@@ -38,12 +45,12 @@ export class ApptListComponent implements OnInit {
         role: 'destructive',
         icon: 'trash',
         handler: () => {
-          console.log('Delete clicked');          
+          console.log('Delete clicked');
         }
       }, {
         text: 'View',
         icon: 'eye',
-        handler: () => {          
+        handler: () => {
           this.viewAppts(apptid);
         }
       }, {
@@ -64,12 +71,12 @@ export class ApptListComponent implements OnInit {
     await actionSheet.present();
   }
 
-  viewAppts(apptid){
+  viewAppts(apptid) {
     this.presentModal(apptid);
-          // this.router.navigate(['appointment/view', { AppointmentId: apptid }]);
+    // this.router.navigate(['appointment/view', { AppointmentId: apptid }]);
   }
 
-  editAppt(apptid){
+  editAppt(apptid) {
     this.router.navigate(['appointment/new', { AppointmentId: apptid }]);
   }
 
@@ -90,7 +97,9 @@ export class ApptListComponent implements OnInit {
     // }
     let params = new HttpParams();
     this.apptsrv.getList(params).subscribe(s => {
-      this.data = this.data.concat(s);
+      var alldata = s[0];
+      this.totaldata = s[1][0].Count;
+      this.data = this.data.concat(alldata);
     });
   }
 
@@ -101,7 +110,7 @@ export class ApptListComponent implements OnInit {
 
       // App logic to determine if all data is loaded
       // and disable the infinite scroll
-      if (this.data.length == 1000) {
+      if (this.data.length == this.totaldata) {
         event.target.disabled = true;
       } else {
         this.AddData();
@@ -111,5 +120,9 @@ export class ApptListComponent implements OnInit {
 
   toggleInfiniteScroll() {
     this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
+  }
+
+  BookAppt() {
+    this.router.navigateByUrl('/appointment/new');
   }
 }

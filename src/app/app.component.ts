@@ -17,11 +17,11 @@ export class AppComponent implements OnInit {
   public isShowNav: boolean = false;
   public selectedIndex = 0;
   public appPages = [
-    {
-      title: 'Inbox',
-      url: '/folder/Inbox',
-      icon: 'mail'
-    },
+    // {
+    //   title: 'Inbox',
+    //   url: '/folder/Inbox',
+    //   icon: 'mail'
+    // },
     {
       title: 'Appointment',
       url: '/appointment/list',

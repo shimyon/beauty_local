@@ -3,6 +3,7 @@ import { AjaxServiceService } from '../ajax.service.service';
 import { appGlob } from '../../../environments/app_glob';
 import { HttpParams } from '@angular/common/http';
 import { Appointment } from '../../_models/appointment/appointment.model';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { Appointment } from '../../_models/appointment/appointment.model';
 export class AppointmentService {
   constructor(private ajax: AjaxServiceService) { }
 
-  getList(params: HttpParams) {    
+  getList(params: HttpParams) {
     let userdet = appGlob.User.UserDetailsGet();
     if (appGlob.User.isClient()) {
       params = params.append("TenantId", userdet.TenantId);
@@ -25,6 +26,9 @@ export class AppointmentService {
   SaveData(appt: Appointment) {
     let params = new HttpParams();
     let userdet = appGlob.User.UserDetailsGet();
+    if (appt.AppointmentId) {
+      params = params.append("AppointmentId", appt.AppointmentId.toString());
+    }
     if (appt.TenantId) {
       params = params.append("TenantId", appt.TenantId.toString());
     }
@@ -35,7 +39,11 @@ export class AppointmentService {
       params = params.append("StatusId", appt.StatusId.toString());
     }
     if (appt.ApptDate) {
-      params = params.append("ApptDate", appt.ApptDate.toISOString());
+      debugger
+      params = params.append("ApptDate",
+        moment(appt.ApptDate).format("YYYY-MM-DD HH:mm:ss")
+      );
+      //params = params.append("ApptDate", appt.ApptDate.toISOString());
     }
     if (appt.Subject) {
       params = params.append("Subject", appt.Subject);
@@ -45,8 +53,9 @@ export class AppointmentService {
     }
     if (appt.Services) {
       params = params.append("Services", appt.Services);
-    }    
+    }
     params = params.append("action", "update");
     return this.ajax.PostData("appointment_action.php", params);
   }
 }
+

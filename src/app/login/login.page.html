@@ -21,7 +21,7 @@
                         <div style="text-align: center;">
                             <img src="assets/bbloginlogowhite.png" style="max-width: 150px; margin-top: 50px; margin-bottom: 50px;" />
                         </div>
-                        <div padding [hidden]="!AppForClient">
+                        <div padding *ngIf="AppForClient">
                             <ion-item>
                                 <ion-input id="environment" name="environment" type="text" placeholder="Client ID" [(ngModel)]="formvalue.environment" required></ion-input>
                             </ion-item>
@@ -49,15 +49,22 @@
                         </div> -->
                     </ion-col>
                 </ion-row>
-                <ion-row>
-                    <div text-center color="warning">
-                        <ion-text color="secondary">
-                            If you don't have an account, please
-                            <a routerLink="/login/signup"> register</a> first!
-                        </ion-text>
-                    </div>
-                </ion-row>
-            </ion-grid>
-        </form>
-    </div>
+                <ion-row style="margin-top: 20px;">
+                    <div text-center color="warning" style="
+              background: #ffffff78;
+              text-align: center;
+              width: 100%;
+              border-radius: 6px;
+            ">
+                        <ion-text color="secondary" style="color: #9c27b0; font-size: 20px;">
+                            If you don't have an account, <br /> please
+                            <a routerLink="/login/signup" style="font-weight: bold; color: #000;">register</a
+              >
+              first!
+            </ion-text>
+          </div>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </div>
 </ion-content>
