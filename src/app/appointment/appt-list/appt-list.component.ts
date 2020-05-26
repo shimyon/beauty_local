@@ -5,6 +5,8 @@ import { HttpParams } from '@angular/common/http';
 import { appGlob } from '../../../environments/app_glob';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApptViewComponent } from '../appt-view/appt-view.component';
+import { lookup } from '../../_models/lookup/lookup.model';
+import { LookupService } from '../../_services/app-services/lookup.service';
 
 @Component({
   selector: 'app-appt-list',
@@ -16,38 +18,67 @@ export class ApptListComponent implements OnInit {
   isCustomer: boolean = false;
   isClient: boolean = false;
   data = [];
-  totaldata =0;
+  status: any[] = [];
+  selectedStatus = 0;
+  totaldata = 0;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private apptsrv: AppointmentService,
     public actionSheetController: ActionSheetController,
+    private lookupsrv: LookupService,
     public modalController: ModalController) { }
 
   ngOnInit() {
 
   }
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
     console.log('ionViewWillEnter');
-    this.data = [];
     this.isClient = appGlob.User.isClient();
     this.isCustomer = appGlob.User.isCustomer();
+    await this.getStatus();
+    // if (this.status.length) {
+    //   this.selectedStatus = this.status[0].LookUpId;
+    // }
+    this.ResetData();
+  }
+
+  ResetData() {
+    this.data = [];
     this.AddData();
   }
 
+  async getStatus() {
+    let lkup: lookup = new lookup();
+    lkup.GroupName = 'AppStatus';
+    return new Promise((success, rejected) => {
+      this.lookupsrv.getList(lkup).subscribe(s => {
+        this.status = <[]>s;
+        success(this.status);
+      }, err => {
+        rejected(err);
+      });
+    });
+  }
+
   async presentActionSheet(apptid) {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Action',
-      buttons: [{
+    let btns = new Array();
+
+    if (this.isCustomer) {
+      btns.push({
         text: 'Delete',
         role: 'destructive',
         icon: 'trash',
         handler: () => {
           console.log('Delete clicked');
         }
-      }, {
+      });
+    }
+
+    btns = btns.concat(
+      [{
         text: 'View',
         icon: 'eye',
         handler: () => {
@@ -67,6 +98,10 @@ export class ApptListComponent implements OnInit {
           console.log('Cancel clicked');
         }
       }]
+    );
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Action',
+      buttons: btns
     });
     await actionSheet.present();
   }
@@ -96,6 +131,9 @@ export class ApptListComponent implements OnInit {
     //   this.data.push(index);
     // }
     let params = new HttpParams();
+    if (this.selectedStatus && this.selectedStatus.toString() !== "0") {
+      params = params.append("StatusId", this.selectedStatus.toString());
+    }
     this.apptsrv.getList(params).subscribe(s => {
       var alldata = s[0];
       this.totaldata = s[1][0].Count;
@@ -124,5 +162,10 @@ export class ApptListComponent implements OnInit {
 
   BookAppt() {
     this.router.navigateByUrl('/appointment/new');
+  }
+
+  ionChangeEvent(event: any) {
+    //debugger
+    this.ResetData();
   }
 }

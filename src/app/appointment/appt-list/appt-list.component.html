@@ -8,6 +8,16 @@
         </ion-buttons>
         <ion-title>Appoinment</ion-title>
     </ion-toolbar>
+    <ion-toolbar>
+        <ion-segment color="warning" (ionChange)="ionChangeEvent($event)" scrollable [(ngModel)]="selectedStatus">
+            <ion-segment-button value="0">
+                <ion-label>All</ion-label>
+            </ion-segment-button>
+            <ion-segment-button *ngFor="let sts of status" value="{{sts.LookUpId}}">
+                <ion-label>{{sts.Value}}</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">

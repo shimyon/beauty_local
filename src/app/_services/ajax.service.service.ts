@@ -64,4 +64,13 @@ export class AjaxServiceService {
         })
       );
   }
+
+  Upload(formData: FormData) {
+    return new Promise((result, reject) => {
+      this.http.post(environment.apiurl + "/admin/document_upload.php", formData)
+        .subscribe((data: any) => {
+          result(data);
+        })
+    })
+  }
 }

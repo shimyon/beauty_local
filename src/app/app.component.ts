@@ -36,6 +36,11 @@ export class AppComponent implements OnInit {
       title: 'Book Appointment',
       url: '/appointment/new',
       icon: 'add-circle'
+    },
+    {
+      title: 'Accessories',
+      url: '/accessories',
+      icon: 'add-circle'
     }
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];

@@ -4,9 +4,10 @@
 
 export const environment = {
   production: false,
-  apiurl: 'http://www.anmolfoundation.group',
-  // apiurl: 'http://localhost:90/anmolfoundation.group',
-  AppFor: "Customer"
+  //apiurl: 'http://www.anmolfoundation.group',
+   apiurl: 'http://192.168.2.2:90/anmolfoundation.group',
+  //AppFor: "Customer"
+  AppFor: "Client"
 };
 
 /*

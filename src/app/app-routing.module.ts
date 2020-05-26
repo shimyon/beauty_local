@@ -25,6 +25,11 @@ const routes: Routes = [
     path: 'appointment',
     canActivate: [AuthGuard],
     loadChildren: () => import('./appointment/appointment.module').then( m => m.AppointmentPageModule)
+  },
+  {
+    path: 'accessories',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./accessories/accessories.module').then( m => m.AccessoriesPageModule)
   }
 ];
 

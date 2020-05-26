@@ -49,7 +49,9 @@ export class LoginPage implements OnInit {
 
   register(form: NgForm) {
     // environment.apiurl = form.value.environment;
-    localStorage.setItem('tenantid', form.value.environment);
+    if (this.AppForClient) {
+      localStorage.setItem('tenantid', form.value.environment);      
+    }
     localStorage.setItem('currentUser', form.value.username);
     // localStorage.setItem('isLogin', "Y");
     // this.router.navigateByUrl("waybills");

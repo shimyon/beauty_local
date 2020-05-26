@@ -3,7 +3,7 @@ import { environment } from "./environment";
 export const appGlob = {
     User: {
         UserDetailsGet: () => {
-            return {
+            let data = {
                 userid: localStorage.getItem('userid'),
                 username: localStorage.getItem('username') || '',
                 firstname: localStorage.getItem('firstname') || '',
@@ -12,7 +12,11 @@ export const appGlob = {
                 isLogin: localStorage.getItem('isLogin'),
                 AppFor: localStorage.getItem('AppFor'),
                 TenantId: localStorage.getItem('tenantid') || '0'
+            };
+            if (data.firstname == '' && data.lastname == '' && data.surname == '') {
+                data.firstname = data.username;
             }
+            return data;
         },
         UserDetailsClear: () => {
             localStorage.removeItem('userid');

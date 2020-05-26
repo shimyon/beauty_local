@@ -14,6 +14,7 @@ import { ServicesModule } from './_services/services.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoaderInterceptor } from './_interceptors/loader.interceptor';
 
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
